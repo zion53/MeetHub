@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.jumbotron {
+    background-color: #f8f9fa; /* Light gray background color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-primary {
+    color: #007bff; /* Bootstrap's primary color */
+}
+
+.btn {
+    display: inline-block;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-top: 15px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap's danger color */
+    color: #fff;
+}
+
+/* Style the FontAwesome icons */
+.fa {
+    margin-right: 5px;
+}
+
+.fa-google {
+    color: #fff; /* Color for the Google icon */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center text-primary">
+            <h1><span class="fa fa-lock"></span> Social Authentication</h1>
+            <p>Login or Register with:</p>
+            <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google"></span> SignIn with Google</a>
+        </div>
+    </div>
+</body>
+</html>

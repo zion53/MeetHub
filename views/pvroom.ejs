@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const ROOM_ID = '<%= ROOM_ID %>'
+        const userId = '<%= userId %>'
+        const name = '<%= userName %>'
+        console.log(name)
+    </script>
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="script.js" defer></script>
+    <title>My chat room</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .main-page{
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-flow: column wrap;
+        }
+
+        .video_chat {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-flow: row wrap;
+        }
+
+        #video-grid {
+            width: 60%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(20%,1fr));
+            gap: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
+            overflow-y: auto;
+        }
+
+        .video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .chat-container {
+            max-width: 30%px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .chat-heading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .scrollable-container {
+            display: flex;
+            flex-flow: column wrap;
+            height: 60vh;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            width: 300px;
+            /* Adjust the width as needed */
+        }
+
+        .left-chat-bubble {
+            position: relative;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            margin-right: 50%;
+            max-width: calc(50% - 20px);
+            /* Adjust the maximum width of the chat bubble */
+            word-wrap: break-word;
+        }
+
+        .left-chat-bubble::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            margin-top: -10px;
+            /* Half of the bubble's height */
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #4CAF50 transparent transparent;
+        }
+
+        .right-chat-bubble {
+            position: relative;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            margin-right: 50%;
+            max-width: calc(50% - 20px);
+            /* Adjust the maximum width of the chat bubble */
+            word-wrap: break-word;
+        }
+
+        .right-chat-bubble::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            margin-top: -10px;
+            /* Half of the bubble's height */
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #4CAF50 transparent transparent;
+        }
+
+        .chat-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .send-button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: -100px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border-top: 1px solid #ccc;
+        }
+        a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #room-id {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .canvas_whiteboard {
+            height: 1000px;
+            width: 100%;
+            display: block;
+        }
+        .whiteboard {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class='main-page'>
+    <div class="video_chat">
+        <div id="video-grid">
+            <!-- Video elements will be dynamically added/removed here -->
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-heading">Chats</div>
+            <div class="scrollable-container" id="scrollable-container">
+                <!-- chat-bubble -->
+            </div>
+            <form class="chat-form" id="messageForm">
+                <input type="text" class="chat-input" id="messageInput" placeholder="Type your message..." required>
+                <button type="submit" class="send-button">Send</button>
+            </form>
+        </div>
+    </div>
+    <div id="controls">
+        <div id="room-id">
+            Room ID: <span id="roomIdValue">
+                <%= ROOM_ID %>
+            </span>
+        </div>
+        <!-- <button onclick="removeVideo()">Remove Video</button> -->
+        <button onclick="startScreenRecording()"  id="startRecording">Start recording</button>
+        <a href="/home">Abort Call</a>
+        <button onclick=" startScreenShare()">Screen Share</button>
+    </div>
+</div>
+    <div class="canvas_whiteboard">
+        <button id="clear-canvas">clear canvas</button>
+        <canvas class="whiteboard" id="canvas" height="743px" ></canvas>
+    </div>
+</body>
+
+</html>
