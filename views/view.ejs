@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meet Hub</title>
+  <style>
+    body {
+      background-color: #191919;
+      font-family: 'Open Sans', sans-serif;
+      color: #fff;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .text {
+      opacity: 0;
+      position: absolute;
+      z-index: 7;
+      text-align: center;
+      margin: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      font-size: 24px;
+      font-weight: 700;
+      animation: fadeIn 0.6s ease-in-out 2.5s forwards;
+    }
+
+    .text p {
+      margin: 0 0 20px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+      animation: typewriter 2s steps(30, end) forwards;
+    }
+
+    .text a {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 20px;
+      color: #f5d300;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: bold;
+      background: transparent;
+      border: 2px solid #f5d300;
+      border-radius: 5px;
+      transition: background 0.3s, color 0.3s;
+      opacity: 0;
+      animation: fadeInLinks 1s ease-in-out 3s forwards;
+    }
+
+    .text a:hover {
+      background: #f5d300;
+      color: #191919;
+    }
+
+    .splash {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .splash_logo {
+      position: absolute;
+      font-size: 36px;
+      font-weight: bold;
+      color: #fff;
+      opacity: 1;
+      animation: fadeOut 0.6s ease-in-out 2s forwards;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeInLinks {
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes typewriter {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash">
+    <div class="splash_logo">MH</div>
+  </div>
+  <div class="text">
+    <p>Welcome</p>
+    <p>To Meet Hub</p>
+    <a href="/home">Start Meeting</a><br>
+    <a onclick="joinbyId();">Join by ID</a><br>
+    <a href="/schedule-meet">Schedule a Meeting</a>
+  </div>
+
+  <script>
+    function joinbyId(){
+		let foo = prompt('Enter Meeting ID to Join (example: abc-defg-hij)');
+		if((foo[3]==="-")&&(foo[8]==="-")){
+			console.log(foo);
+			window.location.href=foo;
+		}else{
+			alert("Please enter a proper meeting ID.");
+			window.location.reload();
+		}
+	  }
+  </script>
+  </script>
+</body>
+</html>
